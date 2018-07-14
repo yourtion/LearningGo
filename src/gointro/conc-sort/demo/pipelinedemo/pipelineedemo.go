@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	p := pipeline.ArraySource(3, 2, 6, 7, 4)
+	p := pipeline.InMemSort(
+		pipeline.ArraySource(3, 2, 6, 7, 4))
 	for v := range p {
 		fmt.Println(v)
 	}
