@@ -1,6 +1,11 @@
 package pipeline
 
-import "sort"
+import (
+	"encoding/binary"
+	"io"
+	"math/rand"
+	"sort"
+)
 
 func ArraySource(a ...int) <-chan int {
 	out := make(chan int)
@@ -56,6 +61,51 @@ func Merge(in1, in2 <-chan int) <-chan int {
 			}
 		}
 
+		close(out)
+	}()
+
+	return out
+}
+
+func ReaderSource(reader io.Reader) <-chan int {
+	out := make(chan int)
+
+	go func() {
+		buffer := make([]byte, 8)
+		for {
+			n, err := reader.Read(buffer)
+			if n > 0 {
+				v := int(
+					binary.BigEndian.Uint64(buffer))
+				out <- v
+			}
+			if err != nil {
+				break
+			}
+		}
+
+		close(out)
+	}()
+
+	return out
+}
+
+func WriterSink(writter io.Writer, in <-chan int) {
+	for v := range in {
+		buffer := make([]byte, 8)
+		binary.BigEndian.PutUint64(
+			buffer, uint64(v))
+		writter.Write(buffer)
+	}
+}
+
+func RandomSource(count int) <-chan int {
+	out := make(chan int)
+
+	go func() {
+		for i := 0; i < count; i++ {
+			out <- rand.Int()
+		}
 		close(out)
 	}()
 
