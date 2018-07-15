@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	const filename = "large.in"
-	const n = 10000000
+	const filename = "small.in"
+	const n = 64
 	file, err := os.Create(os.TempDir() + filename)
 	if err != nil {
 		panic(err)
@@ -28,7 +28,7 @@ func main() {
 	defer file.Close()
 
 	p = pipeline.ReaderSource(
-		bufio.NewReader(file))
+		bufio.NewReader(file), -1)
 	count := 0
 
 	for v := range p {

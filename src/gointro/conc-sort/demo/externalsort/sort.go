@@ -1,0 +1,84 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"gointro/conc-sort/pipeline"
+	"os"
+)
+
+func main() {
+	const fileIn = "small.in"
+	const fileOut = "small.out"
+	const n = 64
+	const cut = 4
+	genFile(os.TempDir()+fileIn, n)
+
+	p := createPipeline(
+		os.TempDir()+fileIn, n*cut, cut)
+	writeToFile(p, os.TempDir()+fileOut)
+	printFile(os.TempDir() + fileOut)
+}
+
+func genFile(filename string, count int) {
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	p := pipeline.RandomSource(count)
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	pipeline.WriterSink(writer, p)
+	writer.Flush()
+}
+
+func createPipeline(
+	filename string,
+	fileSize, chunkCount int) <-chan int {
+
+	chunkSize := fileSize / chunkCount
+
+	sortResults := []<-chan int{}
+	for i := 0; i < chunkCount; i++ {
+		file, err := os.Open(filename)
+		if err != nil {
+			panic(err)
+		}
+
+		file.Seek(int64(i*chunkSize), 0)
+
+		source := pipeline.ReaderSource(
+			bufio.NewReader(file), chunkSize)
+
+		sortResults = append(sortResults,
+			pipeline.InMemSort(source))
+	}
+	return pipeline.MergeN(sortResults...)
+}
+
+func printFile(filename string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	p := pipeline.ReaderSource(file, -1)
+	for v := range p {
+		fmt.Println(v)
+	}
+}
+
+func writeToFile(p <-chan int, filename string) {
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	defer writer.Flush()
+
+	pipeline.WriterSink(writer, p)
+}
