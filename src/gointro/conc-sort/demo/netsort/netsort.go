@@ -6,22 +6,19 @@ import (
 	"gointro/conc-sort/pipeline"
 	"os"
 	"strconv"
-	"time"
 )
 
 func main() {
-	const fileIn = "large.in"
-	//const fileOut = "large.out"
-	const n = 512
+	const fileIn = "large2.in"
+	const fileOut = "large2.out"
+	const n = 10000000
 	const cut = 4
 	genFile(os.TempDir()+fileIn, n)
 
-	createNetworkPipeline(
+	p := createNetworkPipeline(
 		os.TempDir()+fileIn, n*8, cut)
-	//writeToFile(p, os.TempDir()+fileOut)
-	//printFile(os.TempDir() + fileOut)
-
-	time.Sleep(time.Hour)
+	writeToFile(p, os.TempDir()+fileOut)
+	printFile(os.TempDir() + fileOut)
 }
 
 func genFile(filename string, count int) {
@@ -69,7 +66,6 @@ func createNetworkPipeline(
 		sortAddr = append(sortAddr, addr)
 	}
 
-	return nil
 	sortResults := []<-chan int{}
 
 	for _, addr := range sortAddr {
@@ -79,4 +75,35 @@ func createNetworkPipeline(
 
 	// 归并数据
 	return pipeline.MergeN(sortResults...)
+}
+
+func printFile(filename string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	p := pipeline.ReaderSource(file, -1)
+	count := 0
+	for v := range p {
+		fmt.Println(v)
+		count++
+		if count > 100 {
+			break
+		}
+	}
+}
+
+func writeToFile(p <-chan int, filename string) {
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	defer writer.Flush()
+
+	pipeline.WriterSink(writer, p)
 }
