@@ -9,16 +9,20 @@ import (
 	"time"
 )
 
+// 临时变量，记录开始时间
 var startTime time.Time
 
+// 初始化开始状态
 func Init() {
 	startTime = time.Now()
 }
 
+// 打印开始时间计时
 func PrintTime(event string) {
 	fmt.Println(event + ": " + time.Now().Sub(startTime).String())
 }
 
+// 将数组转换成一个 chan
 func ArraySource(a ...int) <-chan int {
 	out := make(chan int)
 
@@ -32,6 +36,7 @@ func ArraySource(a ...int) <-chan int {
 	return out
 }
 
+// 对 chan 的数据进行内存排序（调用 sort.Ints() ）
 func InMemSort(in <-chan int) <-chan int {
 	out := make(chan int, 1024)
 
@@ -58,6 +63,7 @@ func InMemSort(in <-chan int) <-chan int {
 	return out
 }
 
+// 合并两个排序完成的 chan（归并两个）
 func Merge(in1, in2 <-chan int) <-chan int {
 	out := make(chan int, 1024)
 
@@ -82,6 +88,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 	return out
 }
 
+// 读取文件为 chan
 func ReaderSource(
 	reader io.Reader, chunkSize int) <-chan int {
 	out := make(chan int, 1024)
@@ -110,6 +117,7 @@ func ReaderSource(
 	return out
 }
 
+// 写文件
 func WriterSink(writter io.Writer, in <-chan int) {
 	for v := range in {
 		buffer := make([]byte, 8)
@@ -119,6 +127,7 @@ func WriterSink(writter io.Writer, in <-chan int) {
 	}
 }
 
+// 生成随数
 func RandomSource(count int) <-chan int {
 	out := make(chan int, 1024)
 
@@ -132,6 +141,7 @@ func RandomSource(count int) <-chan int {
 	return out
 }
 
+// 将 N 个 chan 进行合并（递归两两合并）
 func MergeN(inputs ...<-chan int) <-chan int {
 	if len(inputs) == 1 {
 		return inputs[0]

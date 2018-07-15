@@ -52,12 +52,16 @@ func createPipeline(
 
 		file.Seek(int64(i*chunkSize), 0)
 
+		// 分块读取文件
 		source := pipeline.ReaderSource(
 			bufio.NewReader(file), chunkSize)
 
+		// 分块内存排序
 		sortResults = append(sortResults,
 			pipeline.InMemSort(source))
 	}
+
+	// 归并数据
 	return pipeline.MergeN(sortResults...)
 }
 
