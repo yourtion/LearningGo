@@ -2,10 +2,22 @@ package pipeline
 
 import (
 	"encoding/binary"
+	"fmt"
 	"io"
 	"math/rand"
 	"sort"
+	"time"
 )
+
+var startTime time.Time
+
+func Init() {
+	startTime = time.Now()
+}
+
+func PrintTime(event string) {
+	fmt.Println(event + ": " + time.Now().Sub(startTime).String())
+}
 
 func ArraySource(a ...int) <-chan int {
 	out := make(chan int)
@@ -21,7 +33,7 @@ func ArraySource(a ...int) <-chan int {
 }
 
 func InMemSort(in <-chan int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 
 	go func() {
 		// Read into memory
@@ -29,9 +41,11 @@ func InMemSort(in <-chan int) <-chan int {
 		for v := range in {
 			a = append(a, v)
 		}
+		PrintTime("Read done")
 
 		// Sort
 		sort.Ints(a)
+		PrintTime("InMemSort done")
 
 		// Output
 		for _, v := range a {
@@ -45,7 +59,7 @@ func InMemSort(in <-chan int) <-chan int {
 }
 
 func Merge(in1, in2 <-chan int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 
 	go func() {
 		v1, ok1 := <-in1
@@ -61,6 +75,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 			}
 		}
 
+		PrintTime("Merge done")
 		close(out)
 	}()
 
@@ -69,7 +84,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 
 func ReaderSource(
 	reader io.Reader, chunkSize int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 
 	go func() {
 		buffer := make([]byte, 8)
@@ -105,7 +120,7 @@ func WriterSink(writter io.Writer, in <-chan int) {
 }
 
 func RandomSource(count int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 
 	go func() {
 		for i := 0; i < count; i++ {

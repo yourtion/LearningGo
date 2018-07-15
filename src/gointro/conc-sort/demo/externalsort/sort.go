@@ -8,14 +8,14 @@ import (
 )
 
 func main() {
-	const fileIn = "small.in"
-	const fileOut = "small.out"
-	const n = 64
+	const fileIn = "large.in"
+	const fileOut = "large.out"
+	const n = 10000000
 	const cut = 4
 	genFile(os.TempDir()+fileIn, n)
 
 	p := createPipeline(
-		os.TempDir()+fileIn, n*cut, cut)
+		os.TempDir()+fileIn, n*8, cut)
 	writeToFile(p, os.TempDir()+fileOut)
 	printFile(os.TempDir() + fileOut)
 }
@@ -31,6 +31,8 @@ func genFile(filename string, count int) {
 	writer := bufio.NewWriter(file)
 	pipeline.WriterSink(writer, p)
 	writer.Flush()
+
+	fmt.Println("Gen file done")
 }
 
 func createPipeline(
@@ -38,6 +40,8 @@ func createPipeline(
 	fileSize, chunkCount int) <-chan int {
 
 	chunkSize := fileSize / chunkCount
+
+	pipeline.Init()
 
 	sortResults := []<-chan int{}
 	for i := 0; i < chunkCount; i++ {
@@ -65,8 +69,13 @@ func printFile(filename string) {
 	defer file.Close()
 
 	p := pipeline.ReaderSource(file, -1)
+	count := 0
 	for v := range p {
 		fmt.Println(v)
+		count++
+		if count > 100 {
+			break
+		}
 	}
 }
 
