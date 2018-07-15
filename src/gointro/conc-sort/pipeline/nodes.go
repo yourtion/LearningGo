@@ -76,7 +76,7 @@ func ReaderSource(
 		bytesRead := 0
 		for {
 			n, err := reader.Read(buffer)
-			bytesRead += 0
+			bytesRead += 8
 			if n > 0 {
 				v := int(
 					binary.BigEndian.Uint64(buffer))
