@@ -42,11 +42,39 @@ func euler() {
 	fmt.Printf("%.2f\n", res)
 }
 
-func truangle() {
+func triangle() {
 	var a, b int = 3, 4
 	var c int
 	c = int(math.Sqrt(float64(a*a + b*b)))
 	fmt.Println(a, b, c)
+}
+
+const filename = "abc.txt"
+
+func consts() {
+	const a, b = 3, 4
+	c := math.Sqrt(a*a + b*b)
+	fmt.Println(filename, c)
+}
+
+func enums() {
+	const (
+		cpp = iota
+		_
+		python
+		golang
+		javascript
+	)
+	fmt.Println(cpp, javascript, python, golang)
+
+	const (
+		b = 1 << (10 * iota)
+		kb
+		mb
+		gb
+		pb
+	)
+	fmt.Println(b, kb, mb, gb, pb)
 }
 
 func main() {
@@ -60,5 +88,8 @@ func main() {
 	fmt.Println(aa, ss, bb)
 
 	euler()
-	truangle()
+	triangle()
+
+	consts()
+	enums()
 }
