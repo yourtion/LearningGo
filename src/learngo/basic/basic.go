@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"math/cmplx"
+)
 
 var aa = 3
 
@@ -32,6 +36,19 @@ func variableShorter() {
 	fmt.Println(a, b, c, s)
 }
 
+func euler() {
+	res := cmplx.Exp(1i*math.Pi) + 1
+	fmt.Println(res)
+	fmt.Printf("%.2f\n", res)
+}
+
+func truangle() {
+	var a, b int = 3, 4
+	var c int
+	c = int(math.Sqrt(float64(a*a + b*b)))
+	fmt.Println(a, b, c)
+}
+
 func main() {
 	fmt.Println("Hello world")
 
@@ -41,4 +58,7 @@ func main() {
 	variableShorter()
 
 	fmt.Println(aa, ss, bb)
+
+	euler()
+	truangle()
 }
