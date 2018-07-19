@@ -1,8 +1,8 @@
 package main
 
 import (
+	"conc-sort/conc-sort/pipeline"
 	"fmt"
-	"gointro/conc-sort/pipeline"
 )
 
 func main() {

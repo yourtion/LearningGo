@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
+	"conc-sort/conc-sort/pipeline"
 	"fmt"
-	"gointro/conc-sort/pipeline"
 	"os"
 	"strconv"
 )
