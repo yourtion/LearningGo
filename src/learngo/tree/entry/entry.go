@@ -5,6 +5,22 @@ import (
 	"learngo/tree"
 )
 
+type myTreeNode struct {
+	node *tree.Node
+}
+
+// 通过组合方法扩展 tree.Node postOrder
+func (myNode *myTreeNode) postOrder() {
+	if myNode == nil || myNode.node == nil {
+		return
+	}
+	left := myTreeNode{myNode.node.Left}
+	left.postOrder()
+	right := myTreeNode{myNode.node.Right}
+	right.postOrder()
+	fmt.Print(myNode.node.Value, " ")
+}
+
 func main() {
 	var root tree.Node
 	root = tree.Node{Value: 3}
@@ -29,9 +45,6 @@ func main() {
 	root.Right.Left.SetValue(4)
 	root.Right.Left.Print() // 4 now
 
-	root.Traverse()
-	fmt.Println()
-
 	// nil 也可以调用方法
 	var pRoot *tree.Node
 	// error
@@ -40,5 +53,12 @@ func main() {
 	pRoot.SetValue(300)
 	pRoot.Print()
 	pRoot.SetValue(3)
+
+	root.Traverse()
+	fmt.Println()
+
+	myRoot := myTreeNode{&root}
+	myRoot.postOrder()
+	fmt.Println()
 
 }
