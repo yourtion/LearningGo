@@ -41,9 +41,11 @@ func main() {
 
 	root.Right.Left.SetValueWrong(4)
 	root.Right.Left.Print() // still 0
+	fmt.Println()
 
 	root.Right.Left.SetValue(4)
 	root.Right.Left.Print() // 4 now
+	fmt.Println()
 
 	// nil 也可以调用方法
 	var pRoot *tree.Node
@@ -53,6 +55,7 @@ func main() {
 	pRoot.SetValue(300)
 	pRoot.Print()
 	pRoot.SetValue(3)
+	fmt.Println()
 
 	root.Traverse()
 	fmt.Println()
@@ -61,4 +64,9 @@ func main() {
 	myRoot.postOrder()
 	fmt.Println()
 
+	nodeCount := 0
+	root.TraverseFunc(func(node *tree.Node) {
+		nodeCount++
+	})
+	fmt.Println("Node count:", nodeCount)
 }

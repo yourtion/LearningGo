@@ -8,7 +8,7 @@ type Node struct {
 }
 
 func (node Node) Print() {
-	fmt.Println(node.Value)
+	fmt.Print(node.Value, " ")
 }
 
 // Go 语言都是值传递（只有值传递）
