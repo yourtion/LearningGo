@@ -14,9 +14,30 @@ func errWrapper(
 	http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter,
 		request *http.Request) {
+
+		// 处理 Panic
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("Panic:%v", r)
+				http.Error(writer,
+					http.StatusText(http.StatusInternalServerError),
+					http.StatusInternalServerError)
+			}
+		}()
+
 		err := handler(writer, request)
 		if err != nil {
 			log.Printf("Error handing request: %s\n", err.Error())
+
+			// 处理自定义错误
+			if userError, ok := err.(userError); ok {
+				http.Error(writer,
+					userError.Message(),
+					http.StatusBadRequest)
+				return
+			}
+
+			// 默认处理 Type Assertion
 			code := http.StatusOK
 			switch {
 			case os.IsNotExist(err):
@@ -31,8 +52,13 @@ func errWrapper(
 	}
 }
 
+type userError interface {
+	error
+	Message() string
+}
+
 func main() {
-	http.HandleFunc("/list/",
+	http.HandleFunc("/",
 		errWrapper(
 			filelisting.HandlerFileLiet))
 
