@@ -5,16 +5,16 @@ import (
 	"sync"
 )
 
-func doWworker(id int, c chan int, w worker) {
+type worker struct {
+	in   chan int
+	done func()
+}
+
+func (w worker) doWorker(id int, c chan int) {
 	for n := range c {
 		fmt.Printf("Worker %d recevved %c \n", id, n)
 		w.done()
 	}
-}
-
-type worker struct {
-	in   chan int
-	done func()
 }
 
 func createWorker(id int, wg *sync.WaitGroup) worker {
@@ -22,7 +22,7 @@ func createWorker(id int, wg *sync.WaitGroup) worker {
 		in:   make(chan int),
 		done: func() { wg.Done() },
 	}
-	go doWworker(id, w.in, w)
+	go w.doWorker(id, w.in)
 	return w
 }
 
