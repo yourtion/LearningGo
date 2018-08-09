@@ -4,6 +4,7 @@ import (
 	"learngo/errorhandling/file-listing-server/filelisting"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 )
 
@@ -56,6 +57,10 @@ type userError interface {
 	error
 	Message() string
 }
+
+// pprof: http://localhost:8888/debug/pprof/
+// CPU Profile:  go tool pprof http://localhost:8888/debug/pprof/profile
+// more in pprof file
 
 func main() {
 	http.HandleFunc("/",
