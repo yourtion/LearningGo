@@ -5,26 +5,26 @@ import (
 	"testing"
 )
 
-func TestParseCityList(t *testing.T) {
+func TestParseCity(t *testing.T) {
 	file, err := ioutil.ReadFile(
-		"citylist_test_data.html")
+		"city_test_data.html")
 
 	if err != nil {
 		panic(err)
 	}
 
-	result := ParseCityList(file)
+	result := ParseCity(file)
 
 	exceptedUrls := []string{
-		"http://www.zhenai.com/zhenghun/aba",
-		"http://www.zhenai.com/zhenghun/akesu",
-		"http://www.zhenai.com/zhenghun/alashanmeng",
+		"http://album.zhenai.com/u/1349973057",
+		"http://album.zhenai.com/u/1130447736",
+		"http://album.zhenai.com/u/1486293757",
 	}
-	exceptedCitys := []string{
-		"City 阿坝", "City 阿克苏", "City 阿拉善盟",
+	exceptedUsers := []string{
+		"User 虐心砝码", "User 小草屋女人", "User 流浪雪",
 	}
 
-	const resultSize = 470
+	const resultSize = 20
 	if len(result.Requests) != resultSize {
 		t.Errorf("result should have %d "+
 			"requestsk but had %d", resultSize, len(result.Requests))
@@ -41,7 +41,7 @@ func TestParseCityList(t *testing.T) {
 			"requestsk but had %d", resultSize, len(result.Items))
 	}
 
-	for i, city := range exceptedCitys {
+	for i, city := range exceptedUsers {
 		if result.Items[i].(string) != city {
 			t.Errorf("excepted city #%d: %s; but was %s", i, city, result.Items[i].(string))
 		}
