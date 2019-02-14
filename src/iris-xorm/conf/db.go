@@ -10,18 +10,18 @@ type DbConf struct {
 	DbName string
 }
 
-var MasterDbConfig DbConf = DbConf{
+var MasterDbConfig = DbConf{
 	Host:   "127.0.0.1",
 	Port:   3306,
 	User:   "root",
 	Pwd:    "123456",
-	DbName: "superstar",
+	DbName: "demo",
 }
 
-var SlaveDbConfig DbConf = DbConf{
+var SlaveDbConfig = DbConf{
 	Host:   "127.0.0.1",
 	Port:   3306,
 	User:   "root",
 	Pwd:    "123456",
-	DbName: "superstar",
+	DbName: "demo",
 }
