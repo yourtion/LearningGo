@@ -11,10 +11,10 @@
     <link href="data:text/css;charset=utf-8," data-href="https://v3.bootcss.com/dist/css/bootstrap-theme.min.css"
           rel="stylesheet" id="bs-theme-stylesheet">
     <title>{{.Title}} - {{.AppName}}</title>
+
 </head>
 
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -32,24 +32,24 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">全部球星 <span class="sr-only">(current)</span></a></li>
-                <li><a href="http://2018.sina.com.cn/ballgamestar/" target="_blank" r>2018世界杯</a></li>
+                <li class="active"><a href="/admin/">全部球星 <span class="sr-only">(current)</span></a></li>
+                <li><a href="/admin/edit">添加球星</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">国籍筛选 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/search?country=中国">中国</a></li>
-                        <li><a href="/search?country=阿根廷">阿根廷</a></li>
-                        <li><a href="/search?country=德国">德国</a></li>
-                        <li><a href="/search?country=葡萄牙">葡萄牙</a></li>
+                        <li><a href="/admin/search?country=中国">中国</a></li>
+                        <li><a href="/admin/search?country=巴西">巴西</a></li>
+                        <li><a href="/admin/search?country=阿根廷">阿根廷</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/search?country=西班牙">西班牙</a></li>
-                        <li><a href="/search?country=巴西">巴西</a></li>
-                        <li><a href="/search?country=英国">英国</a></li>
-                        <li><a href="/search?country=法国">法国</a></li>
+                        <li><a href="/admin/search?country=西班牙">西班牙</a></li>
+                        <li><a href="/admin/search?country=葡萄牙">葡萄牙</a></li>
+                        <li><a href="/admin/search?country=英国">英国</a></li>
+                        <li><a href="/admin/search?country=德国">德国</a></li>
+                        <li><a href="/admin/search?country=法国">法国</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/search?country=美国">美国</a></li>
-                        <li><a href="/search?country=意大利">意大利</a></li>
+                        <li><a href="/admin/search?country=美国">美国</a></li>
+                        <li><a href="/admin/search?country=意大利">意大利</a></li>
                     </ul>
                 </li>
             </ul>
@@ -76,7 +76,6 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
 <div>
     <!-- Render the current template here -->
     {{ yield }}
@@ -85,6 +84,7 @@
         <p>&copy; 2018 - {{.AppOwner}}</p>
     </footer>
 </div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
