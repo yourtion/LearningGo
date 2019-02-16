@@ -1,11 +1,25 @@
 package routes
 
 import (
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/mvc"
+	"iris-xorm/bootstrap"
+	"iris-xorm/services"
+	"iris-xorm/web/controllers"
+	"iris-xorm/web/middleware"
 )
 
 // GetIndexHandler handles the GET: /
-func GetIndexHandler(ctx iris.Context) {
-	ctx.ViewData("Title", "Index Page")
-	ctx.View("index.html")
+// Configure registers the necessary routes to the app.
+func Configure(b *bootstrap.Bootstrapper) {
+	superstarService := services.NewSuperstarService()
+
+	index := mvc.New(b.Party("/"))
+	index.Register(superstarService)
+	index.Handle(new(controllers.IndexController))
+
+	admin := mvc.New(b.Party("/admin"))
+	admin.Router.Use(middleware.BasicAuth)
+	admin.Register(superstarService)
+	admin.Handle(new(controllers.AdminController))
+
 }

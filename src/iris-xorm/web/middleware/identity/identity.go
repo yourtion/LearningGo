@@ -1,14 +1,13 @@
 package identity
 
 import (
+	"iris-xorm/bootstrap"
 	"time"
 
 	"github.com/kataras/iris"
-
-	"github.com/kataras/iris/_examples/structuring/bootstrap/bootstrap"
 )
 
-// New returns a new handler which adds some headers and view data
+/// New returns a new handler which adds some headers and view data
 // describing the application, i.e the owner, the startup time.
 func New(b *bootstrap.Bootstrapper) iris.Handler {
 	return func(ctx iris.Context) {

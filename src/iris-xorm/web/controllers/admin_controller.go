@@ -31,11 +31,13 @@ func (c *AdminController) GetEdit() mvc.Result {
 	var data *models.StarInfo
 	if err == nil {
 		data = c.Service.Get(id)
+	} else {
+		data = &models.StarInfo{Id: 0}
 	}
 	return mvc.View{Name: "admin/edit.html",
 		Data: iris.Map{
 			"Title": "管理后台",
-			"Info":  data,
+			"info":  data,
 		},
 		Layout: "admin/layout.html",
 	}

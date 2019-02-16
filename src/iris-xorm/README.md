@@ -8,5 +8,6 @@ https://www.imooc.com/learn/1066
 $ go get -u github.com/kataras/iris
 $ go get -u github.com/go-xorm/xorm
 $ go get -u github.com/go-sql-driver/mysql
+$ go get -u github.com/gorilla/securecookie
 ```
 

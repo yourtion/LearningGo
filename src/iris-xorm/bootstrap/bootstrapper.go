@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"iris-xorm/conf"
 	"time"
 
 	"github.com/gorilla/securecookie"
@@ -14,6 +15,9 @@ import (
 
 type Configurator func(*Bootstrapper)
 
+// 使用Go内建的嵌入机制(匿名嵌入)，允许类型之前共享代码和数据
+// （Bootstrapper继承和共享 iris.Application ）
+// 参考文章： https://hackthology.com/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html
 type Bootstrapper struct {
 	*iris.Application
 	AppName      string
@@ -41,7 +45,19 @@ func New(appName, appOwner string, cfgs ...Configurator) *Bootstrapper {
 
 // SetupViews loads the templates.
 func (b *Bootstrapper) SetupViews(viewsDir string) {
-	b.RegisterView(iris.HTML(viewsDir, ".html").Layout("shared/layout.html"))
+	htmlEngine := iris.HTML(viewsDir, ".html").Layout("shared/layout.html")
+	// 每次重新加载模版（线上关闭它）
+	htmlEngine.Reload(false)
+	// 给模版内置各种定制的方法
+	htmlEngine.AddFunc("FromUnixtimeShort", func(t int) string {
+		dt := time.Unix(int64(t), int64(0))
+		return dt.Format(conf.SysTimeformShort)
+	})
+	htmlEngine.AddFunc("FromUnixtime", func(t int) string {
+		dt := time.Unix(int64(t), int64(0))
+		return dt.Format(conf.SysTimeform)
+	})
+	b.RegisterView(htmlEngine)
 }
 
 // SetupSessions initializes the sessions, optionally.

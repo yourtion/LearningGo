@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SuperStar" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="LearningGo" />
+    <working_directory value="$PROJECT_DIR$/src/iris-xorm/web" />
+    <kind value="FILE" />
+    <filePath value="$PROJECT_DIR$/src/iris-xorm/main.go" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
