@@ -4,7 +4,7 @@
     <working_directory value="$PROJECT_DIR$/src/iris-xorm/web" />
     <kind value="FILE" />
     <filePath value="$PROJECT_DIR$/src/iris-xorm/main.go" />
-    <directory value="$PROJECT_DIR$" />
+    <directory value="$PROJECT_DIR$/src/iris-xorm" />
     <method v="2" />
   </configuration>
 </component>
