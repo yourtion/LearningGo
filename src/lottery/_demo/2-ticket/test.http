@@ -1,0 +1,7 @@
+### 即开即得型
+GET http://localhost:8080/once
+
+### 双色球自选型
+GET http://localhost:8080/prize
+
+###
