@@ -7,6 +7,7 @@
     <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/xorm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/iris-contrib/httpexpect" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/golog" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/iris" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/pio" vcs="Git" />
