@@ -1,0 +1,18 @@
+### 首页
+GET http://localhost:8080/
+
+### 导入用户1
+POST http://localhost:8080/import
+Content-Type: application/x-www-form-urlencoded
+
+users=123,456,789
+
+### 导入用户2
+POST http://localhost:8080/import
+Content-Type: application/x-www-form-urlencoded
+
+users=ABC,asd,123
+
+### 抽奖
+GET http://localhost:8080/luck
+
