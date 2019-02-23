@@ -12,10 +12,12 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"sync"
 	"time"
 )
 
 var logger *log.Logger
+var mu sync.Mutex
 
 // 奖品类型，枚举 iota 从 0 开始
 const (
@@ -170,6 +172,7 @@ func newApp() *iris.Application {
 	app := iris.New()
 	mvc.New(app.Party("/")).Handle(&lotteryController{})
 
+	mu = sync.Mutex{}
 	initLogger()
 	initGifts()
 
@@ -198,6 +201,9 @@ func (c *lotteryController) Get() string {
 
 // GET http://localhost:8080/lucky
 func (c *lotteryController) GetLucky() map[string]interface{} {
+	mu.Lock()
+	defer mu.Unlock()
+
 	code := luckyCode()
 	ok := false
 	result := make(map[string]interface{})
