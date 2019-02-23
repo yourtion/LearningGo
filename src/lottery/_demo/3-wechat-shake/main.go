@@ -1,5 +1,7 @@
 /**
  * 微信摇一摇
+ * 压力测试：（线程不安全的时候，总的中奖纪录会超过总的奖品数）
+ * wrk -t10 -c10 -d5 http://localhost:8080/lucky
  */
 package main
 
@@ -47,6 +49,7 @@ var giftList []*gift
 
 func initLogger() {
 	f, _ := os.Create(os.TempDir() + "/lottery.log")
+	fmt.Printf("%s\n", os.TempDir())
 	logger = log.New(f, "", log.Ldate|log.Lmicroseconds)
 }
 
@@ -60,10 +63,10 @@ func initGifts() {
 		link:    "",
 		gType:   giftTypeRealLarge,
 		data:    "",
-		total:   10,
-		left:    10,
+		total:   20000,
+		left:    20000,
 		inUse:   true,
-		rate:    10,
+		rate:    10000,
 		rateMin: 0,
 		rateMax: 0,
 	}
@@ -78,7 +81,7 @@ func initGifts() {
 		data:    "",
 		total:   5,
 		left:    5,
-		inUse:   true,
+		inUse:   false,
 		rate:    100,
 		rateMin: 0,
 		rateMax: 0,
@@ -95,7 +98,7 @@ func initGifts() {
 		total:   5,
 		left:    5,
 		rate:    500,
-		inUse:   true,
+		inUse:   false,
 		rateMin: 0,
 		rateMax: 0,
 	}
@@ -111,7 +114,7 @@ func initGifts() {
 		dataList: []string{"c01", "c02", "c03", "c04", "c05"},
 		total:    5,
 		left:     5,
-		inUse:    true,
+		inUse:    false,
 		rate:     2000,
 		rateMin:  0,
 		rateMax:  0,
@@ -127,7 +130,7 @@ func initGifts() {
 		data:    "10",
 		total:   5,
 		left:    5,
-		inUse:   true,
+		inUse:   false,
 		rate:    5000,
 		rateMin: 0,
 		rateMax: 0,
