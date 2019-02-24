@@ -6,6 +6,7 @@ import (
 	"github.com/kataras/iris/mvc"
 	"math/rand"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -28,11 +29,13 @@ var prizeList = []string{
 
 // 奖品的中奖概率设置，与上面的 prizeList 对应的设置
 var rateList = []prizeRate{
-	{10, 1, 0, 0, 1},
-	{20, 2, 1, 2, 2},
-	{50, 10, 3, 5, 10},
-	{1000, 0, 100, 9999, 1000},
+	{100, 1000, 0, 9999, 1000},
+	//{20, 2, 1, 2, 2},
+	//{50, 10, 3, 5, 10},
+	//{1000, 0, 100, 9999, 1000},
 }
+
+var mu = sync.Mutex{}
 
 type lotteryController struct {
 	Ctx iris.Context
@@ -93,7 +96,9 @@ func (c *lotteryController) GetPrize() string {
 		return myPrize
 	} else if prizeRate.Left > 0 {
 		// 还有剩余奖品
+		mu.Lock()
 		prizeRate.Left -= 1
+		mu.Unlock()
 		fmt.Println("中奖： ", myPrize)
 		return myPrize
 	} else {
