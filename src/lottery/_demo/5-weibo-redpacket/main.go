@@ -19,8 +19,14 @@ import (
 	"time"
 )
 
+type task struct {
+	id       uint32
+	callback chan uint
+}
+
 //var packageList = make(map[uint32][]uint)
 var packageList = new(sync.Map)
+var chTasks = make(chan task)
 
 type lotteryController struct {
 	Ctx iris.Context
@@ -29,6 +35,8 @@ type lotteryController struct {
 func newApp() *iris.Application {
 	app := iris.New()
 	mvc.New(app.Party("/")).Handle(&lotteryController{})
+
+	go fetchPackageListMoney()
 
 	return app
 }
@@ -134,27 +142,57 @@ func (c *lotteryController) GetGet() string {
 	}
 
 	listLoad, ok := packageList.Load(uint32(id))
+	if !ok || listLoad == nil {
+		return fmt.Sprintf("红包不存在,id=%d\n", id)
+	}
 	list := listLoad.([]uint)
-	if !ok || len(list) < 1 {
+	if len(list) < 1 {
 		return fmt.Sprintf("红包不存在,id=%d\n", id)
 	}
 
-	// 分配的随机数
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	// 从红包金额中随机得到一个
-	i := r.Intn(len(list))
-	money := list[i]
-	// 更新红包列表中的信息
-	if len(list) > 1 {
-		if i == len(list)-1 {
-			packageList.Store(uint32(id), list[:i])
-		} else if i == 0 {
-			packageList.Store(uint32(id), list[1:])
-		} else {
-			packageList.Store(uint32(id), append(list[:i], list[i+1:]...))
-		}
+	// 构造一个抢红包任务
+	callback := make(chan uint)
+	t := task{id: uint32(id), callback: callback}
+	// 把任务发送给channel
+	chTasks <- t
+	// 回调的channel等待处理结果
+	money := <-callback
+	if money <= 0 {
+		fmt.Println(uid, "很遗憾，没能抢到红包")
+		return fmt.Sprintf("很遗憾，没能抢到红包\n")
 	} else {
-		packageList.Delete(uint32(id))
+		fmt.Println(uid, "抢到一个红包，金额为:", money)
+		return fmt.Sprintf("恭喜你抢到一个红包，金额为:%d\n", money)
 	}
-	return fmt.Sprintf("恭喜你抢到一个红包，金额为:%d\n", money)
+}
+
+func fetchPackageListMoney() {
+	for {
+		t := <-chTasks
+		id := t.id
+		listLoad, ok := packageList.Load(uint32(id))
+		if ok && listLoad != nil {
+			list := listLoad.([]uint)
+			// 分配的随机数
+			r := rand.New(rand.NewSource(time.Now().UnixNano()))
+			// 从红包金额中随机得到一个
+			i := r.Intn(len(list))
+			money := list[i]
+			// 更新红包列表中的信息
+			if len(list) > 1 {
+				if i == len(list)-1 {
+					packageList.Store(uint32(id), list[:i])
+				} else if i == 0 {
+					packageList.Store(uint32(id), list[1:])
+				} else {
+					packageList.Store(uint32(id), append(list[:i], list[i+1:]...))
+				}
+			} else {
+				packageList.Delete(uint32(id))
+			}
+			t.callback <- money
+		} else {
+			t.callback <- 0
+		}
+	}
 }
