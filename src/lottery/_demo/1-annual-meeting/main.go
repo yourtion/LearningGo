@@ -1,3 +1,15 @@
+/**
+ * 年会抽奖程序
+ * 增加了互斥锁，线程安全
+ * 基础功能：
+ * 1 /import 导入参与名单作为抽奖的用户
+ * 2 /lucky 从名单中随机抽取用户
+ * 测试方法：
+ * curl http://localhost:8080/
+ * curl --data "users=yifan,yifan2" http://localhost:8080/import
+ * curl http://localhost:8080/lucky
+ */
+
 package main
 
 import (

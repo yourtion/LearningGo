@@ -1,3 +1,16 @@
+/**
+ * 大转盘程序
+ * curl http://localhost:8080/
+ * curl http://localhost:8080/debug
+ * curl http://localhost:8080/prize
+ * 固定几个奖品，不同的中奖概率或者总数量限制
+ * 每一次转动抽奖，后端计算出这次抽奖的中奖情况，并返回对应的奖品信息
+ *
+ * 不用互斥锁，而是用CAS操作来更新，保证并发库存更新的正常
+ * 压力测试：
+ * wrk -t10 -c100 -d5 "http://localhost:8080/prize"
+ */
+
 package main
 
 import (

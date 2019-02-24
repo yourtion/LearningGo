@@ -1,9 +1,15 @@
 /**
  * 支付宝五福
- * 五福的概率来自识别后的参数
+ * 五福的概率来自识别后的参数(AI图片识别MaBaBa)
+ * 基础功能：
+ * /lucky 只有一个抽奖的接口，奖品信息都是预先配置好的
+ * 测试方法：
+ * curl "http://localhost:8080/?rate=4,3,2,1,0"
+ * curl "http://localhost:8080/lucky?uid=1&rate=4,3,2,1,0"
  * 压力测试：（这里不存在线程安全问题）
  * wrk -t10 -c10 -d 10 "http://localhost:8080/lucky?uid=1&rate=4,3,2,1,0"
  */
+
 package main
 
 import (

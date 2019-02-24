@@ -1,13 +1,16 @@
 /**
  * 微博抢红包
- * 两个步骤：
- * 1. 抢红包，设置红包总金额，红包个数，返回抢红包的地址
- * curl "http://localhost:8080/set?uid=1&money=100&num=100"
- * 2. 抢红包，先到先得，随机得到红包金额
- * curl "http://localhost:8080/get?id=1&uid=1"
- * 压力测试：
- * wrk -t10 -c10 -d5  "http://localhost:8080/set?uid=1&money=100&num=10"
+ * 两个步骤
+ * 1 抢红包，设置红包总金额，红包个数，返回抢红包的地址
+ * GET /set?uid=1&money=100&num=100
+ * 2 抢红包，先到先得，随机得到红包金额
+ * GET /get?id=1&uid=1
+ * 注意：
+ * 线程安全1，红包列表 packageList map 改用线程安全的 sync.Map
+ * 线程安全2，红包里面的金额切片 packageList map[uint32][]uint 并发读写不安全，虽然不会报错
+ * 优化 channel 的吞吐量，启动多个处理协程来执行 channel 的消费
  */
+
 package main
 
 import (
