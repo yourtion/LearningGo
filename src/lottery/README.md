@@ -10,6 +10,12 @@ $ go get -u github.com/iris-contrib/httpexpect
 $ go get -u github.com/go-xorm/xorm
 $ go get -u github.com/go-sql-driver/mysql
 $ go get -u github.com/gorilla/securecookie
+
+$ go get -u github.com/go-xorm/cmd/xorm
+```
+
+```
+$ xorm reverse mysql "root:123456@tcp(127.0.0.1:3306)/demo?charset=utf8"  ./src/github.com/go-xorm/cmd/xorm/templates/goxorm
 ```
 
 ## _demos

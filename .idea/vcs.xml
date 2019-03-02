@@ -2,8 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/cloud.google.com/go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/denisenkom/go-mssqldb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/cmd" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/go-xorm/xorm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/gorilla/securecookie" vcs="Git" />
@@ -11,6 +14,10 @@
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/golog" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/iris" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/kataras/pio" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/lib/pq" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/lunny/log" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/ziutek/mymysql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/golang.org/x/crypto" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/golang.org/x/net" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/golang.org/x/text" vcs="Git" />
   </component>
