@@ -66,5 +66,7 @@ fabric.properties
 .idea/httpRequests
 
 pkg
+bin
 src/github.com/
 src/golang.org/
+src/cloud.google.com/
